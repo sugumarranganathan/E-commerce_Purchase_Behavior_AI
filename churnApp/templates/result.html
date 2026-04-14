@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Prediction Result</title>
+    <title>E-Commerce Purchase Behavior Prediction AI - Result</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,19 +57,19 @@
 </head>
 <body>
     <div class="container">
-        <h1>Prediction Result</h1>
+        <h1>AI Prediction Result</h1>
 
         <div class="result-box">
             {{ result }}
         </div>
 
         {% if confidence %}
-            <div class="sub">Confidence Score: {{ confidence }}%</div>
+            <div class="sub">Prediction Confidence: {{ confidence }}%</div>
         {% endif %}
 
-        <div class="sub">Raw Model Output: {{ raw_result }}</div>
+        <div class="sub">Model Output: {{ raw_result }}</div>
 
-        <a href="/" class="btn">Predict Another Customer</a>
+        <a href="/" class="btn">Predict Another Entry</a>
     </div>
 </body>
 </html>
