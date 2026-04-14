@@ -66,11 +66,13 @@ class PredictView(View):
             pred = model.predict(input_df)
             final_result = target_encoder.inverse_transform(pred)[0]
 
-            # User-friendly output messages
+            # User-friendly output messages + dynamic type
             if str(final_result).strip().lower() == "yes":
                 result = "Customer May Not Continue Purchasing"
+                prediction_type = "risk"
             else:
                 result = "Customer Likely to Continue Purchasing"
+                prediction_type = "safe"
 
             # Confidence score (if model supports predict_proba)
             confidence = None
@@ -81,7 +83,8 @@ class PredictView(View):
             return render(request, 'result.html', {
                 'result': result,
                 'raw_result': final_result,
-                'confidence': confidence
+                'confidence': confidence,
+                'prediction_type': prediction_type
             })
 
         return render(request, self.template_name, {'form': form})
