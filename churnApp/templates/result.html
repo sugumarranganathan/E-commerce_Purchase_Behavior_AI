@@ -4,72 +4,217 @@
     <meta charset="UTF-8">
     <title>E-Commerce Purchase Behavior Prediction AI - Result</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background: #eef4ff;
+            background: linear-gradient(135deg, #e0ecff, #f4f8ff, #dbeafe);
             margin: 0;
             padding: 20px;
+            min-height: 100vh;
         }
+
         .container {
-            width: 90%;
-            max-width: 900px;
-            margin: 40px auto;
-            background: #ffffff;
+            width: 92%;
+            max-width: 1100px;
+            margin: 35px auto;
+            background: rgba(255, 255, 255, 0.97);
             padding: 35px;
-            border-radius: 18px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-radius: 24px;
+            box-shadow: 0 16px 45px rgba(37, 99, 235, 0.15);
+            border: 1px solid rgba(37, 99, 235, 0.08);
+        }
+
+        .page-title {
             text-align: center;
-        }
-        h1 {
+            font-size: 38px;
+            font-weight: 800;
             color: #1e3a8a;
-            font-size: 34px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
-        .result-box {
-            margin: 25px auto;
-            padding: 20px;
-            border-radius: 14px;
-            font-size: 26px;
-            font-weight: bold;
-            background: #dbeafe;
-            color: #1d4ed8;
+
+        .page-subtitle {
+            text-align: center;
+            color: #475569;
+            font-size: 17px;
+            margin-bottom: 28px;
         }
-        .sub {
-            font-size: 18px;
-            margin-top: 15px;
-            color: #374151;
+
+        .main-result {
+            text-align: center;
+            padding: 26px;
+            border-radius: 20px;
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 28px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
         }
+
+        .safe-result {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #15803d;
+            border: 1px solid #86efac;
+        }
+
+        .risk-result {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-top: 10px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 24px 20px;
+            box-shadow: 0 10px 24px rgba(37, 99, 235, 0.08);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .card-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .status-safe {
+            color: #15803d;
+        }
+
+        .status-risk {
+            color: #b91c1c;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .pill-safe {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+        }
+
+        .pill-risk {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+        }
+
+        .footer-actions {
+            text-align: center;
+            margin-top: 32px;
+        }
+
         .btn {
             display: inline-block;
-            margin-top: 25px;
-            background: #2563eb;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8, #3b82f6);
             color: white;
             text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
+            padding: 14px 32px;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+            transition: all 0.25s ease;
         }
+
         .btn:hover {
-            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.32);
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 30px;
+            }
+
+            .main-result {
+                font-size: 24px;
+            }
+
+            .card-value {
+                font-size: 22px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>AI Prediction Result</h1>
+        <div class="page-title">AI Prediction Dashboard</div>
+        <div class="page-subtitle">
+            E-Commerce Purchase Behavior Prediction Result Summary
+        </div>
 
-        <div class="result-box">
+        <div class="main-result {% if prediction_type == 'safe' %}safe-result{% else %}risk-result{% endif %}">
             {{ result }}
         </div>
 
-        {% if confidence %}
-            <div class="sub">Prediction Confidence: {{ confidence }}%</div>
-        {% endif %}
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-title">Risk Status</div>
+                <div class="card-value">
+                    {% if prediction_type == "safe" %}
+                        <span class="status-pill pill-safe">LOW RISK</span>
+                    {% else %}
+                        <span class="status-pill pill-risk">HIGH RISK</span>
+                    {% endif %}
+                </div>
+            </div>
 
-        <div class="sub">Model Output: {{ raw_result }}</div>
+            <div class="card">
+                <div class="card-title">Prediction Confidence</div>
+                <div class="card-value">
+                    {% if confidence %}
+                        {{ confidence }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </div>
+            </div>
 
-        <a href="/" class="btn">Predict Another Entry</a>
+            <div class="card">
+                <div class="card-title">Model Output</div>
+                <div class="card-value {% if prediction_type == 'safe' %}status-safe{% else %}status-risk{% endif %}">
+                    {{ raw_result }}
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-actions">
+            <a href="/" class="btn">Predict Another Entry</a>
+        </div>
     </div>
 </body>
 </html>
